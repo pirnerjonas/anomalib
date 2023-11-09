@@ -173,10 +173,12 @@ class Visualizer:
             visualization.add_image(image_result.image, title="Image")
             if hasattr(image_result, "heat_map"):
                 visualization.add_image(image_result.heat_map, "Predicted Heat Map")
-            if image_result.pred_label:
+            if image_result.pred_label == "Normal":
                 image_classified = add_anomalous_label(image_result.image, image_result.pred_score)
-            else:
+            elif image_result.pred_label == "Anomalous":
                 image_classified = add_normal_label(image_result.image, 1 - image_result.pred_score)
+            else:
+                raise ValueError(f"{image_result.pred_label} is not valid")
             visualization.add_image(image=image_classified, title="Prediction")
 
         return visualization.generate()
